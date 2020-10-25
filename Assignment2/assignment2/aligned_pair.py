@@ -19,7 +19,20 @@ class AlignedPair:
         assert len(self.sequence1) == len(self.sequence2)
 
     def get_similarities(self, scoring_matrix:dict):
-        raise NotImplementedError()
+        return ''.join(
+            [self._get_match_letter(c1,c2, scoring_matrix)
+                for c1,c2 in zip(self.sequence1, self.sequence2)]
+        )
+    
+    def _get_match_letter(self, c1, c2, scoring_matrix):
+        if c1 == c2:
+            return c1
+        elif c1 == '-' or c2 == '-':
+            return ' '
+        elif scoring_matrix[c1][c2] > 0:
+            return '+'
+        else:
+            return ' '
     
     def print_alignment(self, accession1, accession2, scoring_matrix:dict):
         '''
@@ -30,7 +43,7 @@ class AlignedPair:
 
         Example:
         P68871:  62  KAHGKKVLGAFSDGLAHLDN---LKGTFATLSELHCDKLHVDPENFRLLGNVLVCVLAHH
-                     +AH   V+ A ++ +  L +   ++ +   L E H  K     E F+ L  V++ VL        
+                     +AH   V+ A ++ +  L +   ++ +   L E H  K     E F+ L  V++ VL   
         Q14SN0:  83  QAHCAGVITALNNVIDFLHDPGLMEASLIGLVERH-KKRGQTKEEFQNLKEVMLEVLRQA
 
         P68871: 119  FGKEFTPPVQAAYQKVV
@@ -41,25 +54,18 @@ class AlignedPair:
         '''
         pos1 = self.startpos1
         pos2 = self.startpos2
+        similarity = self.get_similarities( scoring_matrix)
 
-        chunks = [(self.sequence1[i:i+60], self.sequence2[i:i+60]) for i in np.arange(0, len(self.sequence1), self.MAX_RES_IN_SINGLE_LINE)]
+        chunks = [(self.sequence1[i:i+60], self.sequence2[i:i+60], similarity[i:i+60]) for i in np.arange(0, len(self.sequence1), self.MAX_RES_IN_SINGLE_LINE)]
+
+        for i in np.arange(0, len(self.sequence1), self.MAX_RES_IN_SINGLE_LINE):
+            print(i)
+            print('{:>6s}:{:4d}  {:60s}'.format(accession1, pos1, self.sequence1[i:i+60]))
+            print('{:13s}{:60s}'.format(' ', similarity[i:i+60]))
+            print('{:>6s}:{:4d}  {:60s}'.format(accession2, pos2, self.sequence2[i:i+60]))
+            
+            pos1 += len([res for res in self.sequence1[i:i+60] if res != '-'])
+            pos2 += len([res for res in self.sequence2[i:i+60] if res != '-'])
 
         # https://docs.python.org/3/library/string.html#formatstrings
-
-        def chunk_alignment_str(chunk):
-            return '''{:>6s}:{:4d}  {:60s}
-                    {:13s}{:60s}
-                    {:>6s}:{:4d}  {:60s}'''\
-                    .format(
-                        accession1, pos1, chunk[0],
-                        ' ',self.get_similarities(chunk[0], chunk[1]),
-                        accession2, pos2, chunk[1],
-                    )
-
-        for chunk in chunks:
-            print(chunk_alignment_str(chunk))
-            print()
-            pos1 += len([res for res in chunk[0] if res != '-'])
-            pos2 += len([res for res in chunk[1] if res != '-'])
-
 

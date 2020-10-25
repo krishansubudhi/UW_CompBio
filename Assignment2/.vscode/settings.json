@@ -1,3 +1,9 @@
 {
-    "python.pythonPath": "C:\\Users\\krkusuk\\AppData\\Local\\Continuum\\miniconda3\\envs\\transformers\\python.exe"
+    "python.pythonPath": "C:\\Users\\krkusuk\\AppData\\Local\\Continuum\\miniconda3\\envs\\compbio\\python.exe",
+    "python.testing.pytestArgs": [
+        "test"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.pytestEnabled": true
 }
