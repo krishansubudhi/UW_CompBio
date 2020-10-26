@@ -1,0 +1,34 @@
+## Create conda environemnt and install dependencies
+
+Install miniconda from https://docs.conda.io/en/latest/miniconda.html
+
+Run these commands in terminal
+
+    conda create -n compbio python==3.8
+    conda activate compbio
+    cd <project directory>
+    pip install -r requirements.txt
+
+
+## Running code
+from project directory (directory that contain the proteins folder, assignment2 folder and run.py file), run the following code
+
+python run.py <arguments>
+
+arguments: 
+--seq1 <Sequence or path to .fasta file> --seq1 <Sequence or path to .fasta file> --permutations <number of random permutations>
+
+### Sanity check
+    python run.py --seq1 MELLSLCSWFAAATTYDADFYDDP --seq2 MSNWTATSSDSTS --permutations 10
+
+### deadly vs ddgearlyk
+    python run.py --seq1 deadly --seq2 ddgearlyk --permutations 999
+
+### Finding alignment between proteins in folder ./proteins and creating score table
+
+    python run_all_proteins.py > outputs.txt
+
+### Finding alignment between proteins with emperical p-value calculation
+    python run.py --seq1 proteins/P15172.fasta --seq2 proteins/Q10574.fasta --permutations 999
+    python run.py --seq1 proteins/P15172.fasta --seq2 proteins/Q10574.fasta --permutations 5000
+    python run.py --seq1 proteins/P15172.fasta --seq2 proteins/O95363.fasta --permutations 999

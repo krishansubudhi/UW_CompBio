@@ -1,4 +1,4 @@
-import sys
+import sys, re
 from assignment2.local_alignment import LocalAlignment
 from assignment2.aligned_pair import AlignedPair
 from assignment2.score import get_score_matrix
@@ -8,15 +8,14 @@ def get_seq_from_file(file_path:str):
     with open(file_path,'r') as file:
         return ''.join([line for line in file if not line.startswith('>')])
 
-def preprocess( seq1, seq2):
+def preprocess( seq1):
     seq1 = get_seq_from_file(seq1) if seq1.endswith('.fasta') else seq1
-    seq2 = get_seq_from_file(seq2) if seq2.endswith('.fasta') else seq2
+    seq1 = seq1.upper()
 
     amino_acids = {'A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P', 'S', 'T', 'W', 'Y', 'V'}
     seq1 = [a for a in seq1 if a in amino_acids]
-    seq2 = [a for a in seq2 if a in amino_acids]
 
-    return seq1, seq2
+    return seq1
 
 import copy
 import random
@@ -28,11 +27,16 @@ def get_random_permutation(seq):
     return seq
 
 def align(seq1, seq2, random_permutations = 0) :
+    print('\n-----\n')
+    accession1 = re.split(r'[\\/.]+',seq1)[-2] if seq1.endswith('.fasta') else 'seq1'
+    accession2 = re.split(r'[\\/.]+',seq2)[-2] if seq2.endswith('.fasta') else 'seq2'
+
+
     scoring_matrix = get_score_matrix('blosum62.txt')
     
     print('{} vs {}'.format(seq1,seq2))
 
-    seq1, seq2 = preprocess(seq1, seq2)
+    seq1, seq2 = preprocess(seq1), preprocess(seq2)
     aligner = LocalAlignment(scoring_matrix, gap_penalty = -4)
 
     pair, best_score, best_score_matrix = aligner.get_best_alignment( seq1, seq2)
@@ -40,9 +44,9 @@ def align(seq1, seq2, random_permutations = 0) :
     if len(seq1)<15 and len(seq2)<15:
         print(best_score_matrix)
     
-    pair.print_alignment('seq1', 'seq2', scoring_matrix)
+    pair.print_alignment(accession1, accession2, scoring_matrix)
 
-    print('Score = {}'.format(best_score))
+    print('\nScore = {}'.format(best_score))
 
     k = 0
     n = 0
@@ -53,15 +57,13 @@ def align(seq1, seq2, random_permutations = 0) :
             if score >= best_score:
                 k +=1
             n += 1
-            print(k,n, score, permuted)
+            #print(k,n, score, permuted)
     
-        print('Emperical P-value = {}'.format(
+        print('Emperical P-value ({} permutations )= {:.3E}'.format(
+            random_permutations,
             (k+1) / (n+1)
         ))
-
-        
-
-
-
-
+    
+    print('\n-----\n')
+    return best_score
 

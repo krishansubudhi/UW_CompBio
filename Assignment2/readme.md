@@ -129,4 +129,9 @@ Run these commands in terminal
 
 
 ## Running code
-python run.py --seq1 MELLSLCSWFAAATTYDADFYDDP --seq2 MSNWTATSSDSTS --permutations 10
+
+    python run.py --seq1 MELLSLCSWFAAATTYDADFYDDP --seq2 MSNWTATSSDSTS --permutations 10
+    python run.py --seq1 deadly --seq2 ddgearlyk --permutations 999
+    python run_all_proteins.py
+    python run.py --seq1 proteins/P15172.fasta --seq2 proteins/Q10574.fasta --permutations 999
+    python run.py --seq1 proteins/P15172.fasta --seq2 proteins/O95363.fasta --permutations 999
