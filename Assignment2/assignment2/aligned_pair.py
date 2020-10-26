@@ -25,6 +25,9 @@ class AlignedPair:
         )
     
     def _get_match_letter(self, c1, c2, scoring_matrix):
+        '''
+        Extra credit
+        '''
         if c1 == c2:
             return c1
         elif c1 == '-' or c2 == '-':

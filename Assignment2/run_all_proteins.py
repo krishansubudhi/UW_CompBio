@@ -1,3 +1,7 @@
+'''
+@author: Krishan Subudhi (Student No: 2040900) (ksubudhi@uw.edu)
+'''
+
 from assignment2.main import align 
 import os
 import pandas as pd

@@ -1,3 +1,7 @@
+'''
+@author: Krishan Subudhi (Student No: 2040900) (ksubudhi@uw.edu)
+'''
+
 import sys, re
 from assignment2.local_alignment import LocalAlignment
 from assignment2.aligned_pair import AlignedPair

@@ -1,3 +1,7 @@
+---
+Krishan Subudhi (Student No: 2040900) (ksubudhi@uw.edu)
+---
+
 ## Create conda environemnt and install dependencies
 
 1. Install miniconda from https://docs.conda.io/en/latest/miniconda.html
