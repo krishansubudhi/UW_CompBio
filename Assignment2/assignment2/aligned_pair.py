@@ -59,7 +59,7 @@ class AlignedPair:
         chunks = [(self.sequence1[i:i+60], self.sequence2[i:i+60], similarity[i:i+60]) for i in np.arange(0, len(self.sequence1), self.MAX_RES_IN_SINGLE_LINE)]
 
         for i in np.arange(0, len(self.sequence1), self.MAX_RES_IN_SINGLE_LINE):
-            print(i)
+            print()
             print('{:>6s}:{:4d}  {:60s}'.format(accession1, pos1, self.sequence1[i:i+60]))
             print('{:13s}{:60s}'.format(' ', similarity[i:i+60]))
             print('{:>6s}:{:4d}  {:60s}'.format(accession2, pos2, self.sequence2[i:i+60]))
