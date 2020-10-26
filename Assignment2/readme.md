@@ -12,7 +12,7 @@ Run these commands in terminal
 
     conda create -n compbio python==3.8
     conda activate compbio
-    pip install -r 
+    pip install -r requirements.txt
 
 ## Blosum62
 
@@ -134,4 +134,44 @@ Run these commands in terminal
     python run.py --seq1 deadly --seq2 ddgearlyk --permutations 999
     python run_all_proteins.py
     python run.py --seq1 proteins/P15172.fasta --seq2 proteins/Q10574.fasta --permutations 999
+    python run.py --seq1 proteins/P15172.fasta --seq2 proteins/O95363.fasta --permutations 999
+
+
+# build.txt
+
+## Create conda environemnt and install dependencies
+
+1. Install miniconda from https://docs.conda.io/en/latest/miniconda.html
+
+2. From the directory containing this file , Run these commands in terminal
+
+    conda create -n compbio python==3.8
+    conda activate compbio
+    cd Assignment2 
+    pip install -r requirements.txt
+
+NOTE: 'Assignment2' is project root directory containing readme.md, assigment2 folder and proteins folder. 
+
+
+3. Run code
+from project directory (directory that contain the proteins folder, assignment2 folder and run.py file), run the following code
+
+    python run.py <arguments>
+
+arguments: 
+--seq1 <Sequence or path to .fasta file> --seq1 <Sequence or path to .fasta file> --permutations <number of random permutations>
+
+### Sanity check
+    python run.py --seq1 MELLSLCSWFAAATTYDADFYDDP --seq2 MSNWTATSSDSTS --permutations 10
+
+### deadly vs ddgearlyk
+    python run.py --seq1 deadly --seq2 ddgearlyk --permutations 999
+
+### Finding alignment between proteins in folder ./proteins and creating score table
+
+    python run_all_proteins.py
+
+### Finding alignment between proteins with emperical p-value calculation
+    python run.py --seq1 proteins/P15172.fasta --seq2 proteins/Q10574.fasta --permutations 999
+    python run.py --seq1 proteins/P15172.fasta --seq2 proteins/Q10574.fasta --permutations 5000
     python run.py --seq1 proteins/P15172.fasta --seq2 proteins/O95363.fasta --permutations 999
