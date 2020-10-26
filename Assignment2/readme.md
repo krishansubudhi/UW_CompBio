@@ -125,3 +125,8 @@ Run these commands in terminal
     Mitochondrial translation is specifically defined as the process within mitochondria whereby mitochondrial mRNA (mt-mRNA) is translated by mitochondrial ribosomes (mitoribosomes) to generate an amino acid polypeptide.
 
     This is completely separate from other proteins as it helps in attaching amino acid to t-RNA
+
+
+
+## Running code
+python run.py --seq1 MELLSLCSWFAAATTYDADFYDDP --seq2 MSNWTATSSDSTS --permutations 10
