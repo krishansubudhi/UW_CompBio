@@ -8,7 +8,7 @@ import numpy as np
 # makeWMM: make a weight matrix from a frequency matrix and background vector. (It may be convenient to save the entropy with the WMM, too.)
 # scanWMM: given a WMM of width k and one or more sequences of varying lengths ≥ k, scan/score each position of each sequence (excluding those < k from the rightmost end).
 
-def makeCountMatrix(sequences : list):
+def makeCountMatrix(sequences : list, weights = None):
     '''
     Given a list M containing n sequences, each of length k that are all presumed to be instances of one motif, the count matrix representing it is a 4 by k table whose i, j entry (1 ≤ i ≤ 4, 1 ≤ j ≤ k) is the count of the number of times nucleotide i appears in position j in a string in M. Again, rows 1, 2, 3, 4 should correspond to nucleotides A, C, G, T in that order. Note that each column of such count table should sum to the same number; before pseudocounting, this number will be n, the number of sequences in M; after pseudocounting, it will be n+p, where p is the sum of the pseudocount vector.
     
@@ -34,12 +34,14 @@ def makeCountMatrix(sequences : list):
     motif_length = s.shape[1]
     cm = pd.DataFrame(np.zeros((4, motif_length)), 
                         index = ['A','C','G','T'], 
-                        columns = range(1, motif_length +1),
-                        dtype = int
+                        columns = range(1, motif_length +1)
                     )
     
     for nt in 'ACGT':
-        cm.loc[nt] = (s == nt).sum(axis=0)
+        nt_presence = (s == nt)
+        if weights:
+            nt_presence = nt_presence*np.array(weights).reshape(-1,1)
+        cm.loc[nt] = nt_presence.sum(axis=0)
     return cm
 
 
@@ -90,3 +92,11 @@ def scanWMM_single( wmm, sequence):
         score = calculate_score(wmm, sequence[pos:pos + motif_len])
         scores.append(score)
     return scores
+
+def calculateProbabilities( wmm, background ):
+    '''
+    make a probability matrix from a frequency matrix and background vector. (It may be convenient to save the entropy with the WMM, too.)
+    '''
+    likelihood = np.power(2,wmm)
+    fm = likelihood * np.array(background).reshape(-1,1)
+    return fm

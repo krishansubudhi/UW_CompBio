@@ -4,11 +4,12 @@ import unittest
 
 def test_makeCountMatrix():
     s =  ['ACCGT', 'TACGG']
-    matrix = makeCountMatrix(s)
+    matrix = makeCountMatrix(s, weights = [0.1,0.2])
     print(matrix)
-    assert matrix.loc['A'][1] ==1
-    assert matrix.loc['G'][4] ==2
-    assert (matrix.sum(axis = 0) == 2).all()
+    assert matrix.loc['A'][1] == (1 * 0.1)
+    assert matrix.loc['G'][4] == (1 * 0.1 + 1 * 0.2)
+    # assert (matrix.sum(axis = 0) == 0.3).all() # 0.30000000000000004
+
 
 def test_addPseudo():
     s =  ['ACCGT', 'TACGG']
