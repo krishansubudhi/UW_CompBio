@@ -13,6 +13,7 @@ Run these commands in terminal
     conda create -n compbio python==3.8
     conda activate compbio
     pip install -r requirements.txt
+    python -m pytest .\test
 
 ## Blosum62
 
