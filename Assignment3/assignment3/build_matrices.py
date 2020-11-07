@@ -52,3 +52,41 @@ def addPseudo(cm: pd.DataFrame, pseudocount : list):
     return cm + np.array(pseudocount).reshape(-1,1)
 
 
+def makeFrequencyMatrix(cm: pd.DataFrame):
+    fm = cm/cm.sum(axis = 0)
+    return fm
+
+def entropy(fm : pd.DataFrame, background:list):
+    '''
+    entropy: calculate the entropy of a frequency matrix relative to background.
+    Expectation of log likelihood matrix
+    '''
+    likelihood = fm / np.array(background).reshape(-1,1)
+    log_likelihood = np.log2(likelihood)
+    entropy_weighted = fm * log_likelihood
+    relative_entropy = entropy_weighted.sum(axis = 0) #sum across all positions
+    total_relative_entropy = relative_entropy.sum()
+    return total_relative_entropy
+
+def makeWMM( fm, background ):
+    '''
+    make a weight matrix from a frequency matrix and background vector. (It may be convenient to save the entropy with the WMM, too.)
+    '''
+    likelihood = fm / np.array(background).reshape(-1,1)
+    wm = log_likelihood = np.log2(likelihood)
+    wm.entropy = entropy(fm, background)
+    return wm
+
+def scanWMM( wmm, sequences : list):
+    # assert len(np.array(sequences).shape) ==2
+    return [scanWMM_single(wmm, seq) for seq in sequences]
+
+def scanWMM_single( wmm, sequence):
+    def calculate_score(wmm , possible_motif):
+        return wmm.lookup(list(possible_motif),wmm.columns).sum() #df.lookup(list('abaa'),['c1','c2','c3','c4'])
+    motif_len = wmm.shape[1]
+    scores = []
+    for pos in range(0, len(sequence) - motif_len + 1):
+        score = calculate_score(wmm, sequence[pos:pos + motif_len])
+        scores.append(score)
+    return scores
