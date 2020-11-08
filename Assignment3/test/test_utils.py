@@ -9,6 +9,7 @@ def test_get_seqs_from_files():
 def test_get_seed_kmers():
     kmers = get_seed_kmers('ATTTTTATTCATCAAGTGTTTACTGTTTTATAAC'[:20], 10)
     assert len(kmers) ==3
+    assert kmers[0] == 'ATTTTTATTCATCAAGTGTTTACTGTTTTATAAC'[:10]
 
     kmers = get_seed_kmers('ATTTTTATTCATCAAGTGTTTACTGTTTTATAAC'[:21], 10)
     assert len(kmers) ==4
