@@ -24,3 +24,19 @@ def test_Estep():
     expected_01 /= s
     assert expectations[0][0] ==  expected_00
     print(expectations)
+
+def test_Mstep():
+    E_zij = np.array(
+        [
+            [0, 1],
+            [0, 1]
+        ]
+    )
+    sequences = ['ACG', 'ACT']
+    k = 2
+    pseudocount = [1,1,1,1]
+    background = 1,1,1,1
+
+    wmm = Mstep(E_zij, sequences, k, pseudocount, background)
+    assert wmm.loc['A'][1] == np.log2((0+1)/(2+4) /1) # 2 is total count at position 1. 4 is total pseudo counts. 1 is background
+    print(wmm)

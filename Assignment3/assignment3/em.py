@@ -25,13 +25,14 @@ def Estep_single(probs, sequence):
     # normalize
     return E_i / E_i.sum()
 
-def Mstep(E_zij, sequences, k = 10, pseudocount : list, background : list):
+def Mstep(E_zij, sequences, k, pseudocount : list, background : list):
+    E_zij = np.array(E_zij)
     assert E_zij.shape[1] == len(sequences[0])-k+1
     kmers = []
     weights = []
     for i,seq in enumerate(sequences):
         for j in range(0, len(seq)- k + 1):
-            kmers.append(seq[j:j + motif_len])
+            kmers.append(seq[j:j + k])
             weights.append(E_zij[i][j])
     cm = makeCountMatrix(kmers, weights)
     cm = addPseudo(cm, pseudocount)
