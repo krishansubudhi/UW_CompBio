@@ -53,6 +53,7 @@ class Evaluator:
         ax.set_xticklabels(x+1)
         ax.set_xlabel('position')
         ax.set_ylabel('count')
+        ax.xaxis.set_major_locator(plt.MaxNLocator(30))
 
         if gold_start:
             for gold in range(gold_start-1, gold_end):

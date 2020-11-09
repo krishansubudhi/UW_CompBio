@@ -9,31 +9,41 @@ def Estep(wmm, sequences, background = [0.25, 0.25, 0.25, 0.25]):
     (scanWMM does most of the required work.)
     '''
     # return np.array([calculate_Ej(wmm, seq) for seq in sequences]) #loops for i dimension
-    probs = calculateProbabilities(wmm, background)
-    E_zij = np.array([Estep_single(probs, seq) for seq in sequences])
-    return E_zij
+    # probs = calculateProbabilities(wmm, background)
+    # E_zij = np.array([Estep_single(probs, seq) for seq in sequences])
+    # return E_zij
+    
+    # only works if bg freq is same 
+    scores_all = scanWMM(wmm,sequences)
+    return [Estep_single(score) for score in scores_all]
 
-def Estep_single(probs, sequence):
-    def calculate_expectation(probs , possible_motif):
-        return np.product(probs.lookup(list(possible_motif),probs.columns))
-    motif_len = probs.shape[1]
-    E_i = []
-    for j in range(0, len(sequence) - motif_len + 1):
-        E_j = calculate_expectation(probs, sequence[j:j + motif_len])
-        E_i.append(E_j)
-    E_i = np.array(E_i)
-    # normalize
-    return E_i / E_i.sum()
+# def Estep_single(probs, sequence):
+#     def calculate_expectation(probs , possible_motif):
+#         return np.product(probs.lookup(list(possible_motif),probs.columns))
+#     motif_len = probs.shape[1]
+#     E_i = []
+#     for j in range(0, len(sequence) - motif_len + 1):
+#         E_j = calculate_expectation(probs, sequence[j:j + motif_len])
+#         E_i.append(E_j)
+#     E_i = np.array(E_i)
+#     # normalize
+#     return E_i / E_i.sum()
+
+def Estep_single(scores):
+    # only works if bg freq is same 
+    likelihoods = 2**np.array(scores)
+    return likelihoods/likelihoods.sum()
 
 def Mstep(E_zij, sequences, k, pseudocount : list, background : list):
     E_zij = np.array(E_zij)
-    assert E_zij.shape[1] == len(sequences[0])-k+1
+    # assert E_zij.shape[1] == len(sequences[0])-k+1
     kmers = []
     weights = []
     for i,seq in enumerate(sequences):
         for j in range(0, len(seq)- k + 1):
             kmers.append(seq[j:j + k])
             weights.append(E_zij[i][j])
+    
     cm = makeCountMatrix(kmers, weights)
     cm = addPseudo(cm, pseudocount)
     fm = makeFrequencyMatrix(cm)

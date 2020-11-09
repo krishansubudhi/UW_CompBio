@@ -22,6 +22,7 @@ class EMProcess:
     
     def iterate(self):
         expectations = Estep(self.wmm, self.sequences, self.background)
-        self.wmm = Mstep(expectations, self.sequences, self.k, self.pseudo_counts, self.background)
+        # self.wmm = Mstep(expectations, self.sequences, self.k, self.pseudo_counts, self.background)
+        self.wmm = Mstep(expectations, self.sequences, self.k, [0.25]*4, self.background)
 
 
