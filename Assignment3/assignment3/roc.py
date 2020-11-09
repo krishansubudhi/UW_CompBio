@@ -12,7 +12,6 @@ class ROC:
         plt.xlabel('FPR')
         plt.ylabel('TPR')
         plt.title('ROC curve')
-        plt.show()
 
     def calculateAUC(self):
         auc = metrics.roc_auc_score(self.y_true, self.y_score)
@@ -22,7 +21,7 @@ class ROC:
         thres_tpr1 = [t for tpr,t in zip(self.tprs, self.thresholds) if tpr == 1 ]
         return max(thres_tpr1)
 
-    def get_TP_FP_TN_FN(self, threshold):
+    def get_TPR_FPR_TP_FP_TN_FN(self, threshold):
         for i,t in enumerate(self.thresholds):
             if t < threshold:
                 break
@@ -36,4 +35,4 @@ class ROC:
         fn = P - tp
         tn = N - fp
 
-        return tp, fp, tn, fn
+        return tpr, fpr, tp, fp, tn, fn

@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class Evaluator:
-    def __init__(self, wmm, sequences):
+    def __init__(self, wmm, sequences, name = ''):
+        self.name = name
         self.wmm = wmm
         self.sequences = sequences
         plt.style.use('ggplot')
@@ -13,11 +14,11 @@ class Evaluator:
         self.scores = scanWMM(self.wmm, self.sequences)
     
     def plot_results(self):
-        sequences = self.sequences
-        scores = self.scores
+        sequences = self.sequences[:2]
+        scores = self.scores[:2]
         fig, axes = plt.subplots(len(scores),1, figsize = (14,len(sequences)*2), constrained_layout=True)
         # fig.set_tight_layout(True)
-        fig.suptitle('WMM Scores for each position in sequences')
+        fig.suptitle(f'WMM {self.name} Scores for each position in sequences')
         # fig.set_dpi(200)
         for ax, seq, score in zip(axes, sequences, scores):
             x = range(len(score))
@@ -47,7 +48,7 @@ class Evaluator:
         x = np.arange(0,max_len)
         barlist = ax.bar(x,c)
         
-        ax.set_title('High scores counts per position')
+        ax.set_title(f'WMM {self.name} High scores counts per position')
         ax.set_xticks(x)
         ax.set_xticklabels(x+1)
         ax.set_xlabel('position')
