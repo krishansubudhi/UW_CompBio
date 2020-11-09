@@ -64,5 +64,3 @@ def get_seed_kmers(sequence, k):
 
     return kmers
 
-
-

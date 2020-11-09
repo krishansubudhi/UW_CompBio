@@ -31,8 +31,8 @@ class ROC:
         total  = len(self.y_true)
         P = np.array(self.y_true).sum()
         N = total - P
-        tp = tpr * P
-        fp = fpr * N
+        tp = int(tpr * P)
+        fp = int(fpr * N)
         fn = P - tp
         tn = N - fp
 
