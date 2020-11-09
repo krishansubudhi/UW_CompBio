@@ -25,3 +25,5 @@ eval = Evaluator(process.wmm, test_seq)
 
 
 eval.plot_results()
+
+# combine scores and create y_true. Calculate ROC
