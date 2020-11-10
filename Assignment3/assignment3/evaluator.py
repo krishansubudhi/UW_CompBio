@@ -9,6 +9,7 @@ class Evaluator:
         self.sequences = sequences
         plt.style.use('ggplot')
         self.calculate_scores()
+        self.gold_start = None
     
     def calculate_scores(self):
         self.scores = scanWMM(self.wmm, self.sequences)
@@ -27,17 +28,18 @@ class Evaluator:
             ax.set_ylabel('scores')
             ax.set_xticks(x)
             ax.set_xticklabels(list(seq)[:len(x)])
-        plt.show()
+        plt.show(block=False)
     
-    def get_gold_positions(self, motif_pos, k):
-        return motif_pos-k//2 , motif_pos+k-1-k//2
+    def set_gold_positions(self, start = 51-5, end = 63-5):
+        self.gold_start = start
+        self.gold_end = end
 
-    def plot_highscore_histogram(self, gold_start= None, gold_end = None):
+    def plot_highscore_histogram(self):
         sequences = self.sequences
         scores = self.scores
 
         fig, ax = plt.subplots(figsize = (14,2))
-        fig.set_dpi(150)
+        # fig.set_dpi(150)
         
         max_len = max([len(seq) for seq in sequences])
         c = np.zeros(max_len, dtype = int)
@@ -55,17 +57,17 @@ class Evaluator:
         ax.set_ylabel('count')
         ax.xaxis.set_major_locator(plt.MaxNLocator(30))
 
-        if gold_start:
-            for gold in range(gold_start-1, gold_end):
+        if self.gold_start:
+            for gold in range(self.gold_start-1, self.gold_end):
                 barlist[gold].set_color('green')
         
         print(f'Most common location of the best motif hit in each sequence = {np.argmax(c)+1}')
-        plt.show()
+        plt.show(block=False)
     
-    def get_y(self, actual_motif_position):
+    def get_y(self):
         y_score = np.array(self.scores)
         y_true = np.zeros_like(y_score, dtype = int)
-        y_true[:,actual_motif_position-1] = 1
+        y_true[:,self.gold_start-1: self.gold_end] = 1
         y_score = y_score.reshape(-1,1)
         y_true = y_true.reshape(-1,1)
         return y_score, y_true
