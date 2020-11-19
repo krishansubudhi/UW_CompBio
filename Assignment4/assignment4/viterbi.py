@@ -6,6 +6,9 @@ Vmax = namedtuple('Vmax_l','pb ptr') # max probability with back pointer at for 
 
 class ViterbiInference:
     def __init__(self, emmisionP : pd.DataFrame, transitionP : pd.DataFrame, begin_state = 'B'):
+        self.emmisionP_orig = emmisionP
+        self.transitionP_orig = transitionP
+
         self.emmisionP = self.process_probability(emmisionP)
         self.transitionP = self.process_probability(transitionP)
         self.begin_state = begin_state
@@ -68,4 +71,37 @@ class ViterbiInference:
 
     def get_max_probability(self, v_all, position = -1):
         sorted_states = sorted(v_all[position], key = lambda state: v_all[position][state].pb, reverse = True) 
-        return np.exp(v_all[position][sorted_states[0]].pb)
+        return v_all[position][sorted_states[0]].pb
+
+    def get_hits(self,path):
+        path.insert(0,'Begin')
+        path.append('End')
+        #mark positions if state changes starts from 1
+        positions = [(path[i], i) for i in range(1, len(path)) if path[i] != path[i-1]]
+        hits = pd.DataFrame(positions, columns = ['state', 'start'])
+        hits['end'] = hits['start'].shift(-1)-1
+        hits = hits.drop(len(hits)-1)
+        hits['end'] = hits['end'].astype(int)
+        hits['length'] = hits['end']- hits['start']+1
+        return hits
+
+    def print(self, v_all, k = 10, hit_state = 'L'):
+        '''
+        the HMM emission/transition parameters used for this pass (e.g., from the tables above for pass 1),
+        the log probability (natural log, base-e) of the overall Viterbi path,
+        the total number of "hits" found, where a hit is (contiguous) subsequence assigned to state 2 in the Viterbi path, and
+        the lengths and locations (starting and ending positions) of the first k (defined below) "hits." Print all hits, if there are fewer than k of them. (By convention, genomic positions are 1-based, not 0-based, indices.)
+        '''
+        print('Emission Probability')
+        print(self.emmisionP_orig)
+
+        print('\nTransition Probability')
+        print(self.transitionP_orig)
+
+        print('\nLog probability of viterbi path= ',self.get_max_probability(v_all).round(5))
+
+        path = self.traceback(v_all)
+        hits = self.get_hits(path)
+
+        print('\nhits' )
+        print(hits[hits.state == hit_state].head(k))

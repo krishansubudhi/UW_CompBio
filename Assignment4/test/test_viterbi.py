@@ -75,6 +75,9 @@ class TestViterbi(unittest.TestCase):
         path = self.viterbi.traceback(v)
         print(path)
         assert path == ['F', 'F', 'L', 'L', 'L', 'F']
-        assert self.viterbi.get_max_probability(v).round(8) == 5.64E-6
+        assert np.exp(self.viterbi.get_max_probability(v)).round(8) == 5.64E-6
 
+    def test_print(self):
+        v = self.viterbi.get_viterbi_path([3,1,6,6,6,4])
+        self.viterbi.print(v)
 #python -m pytest .\test\test_viterbi.py -s -k test_get_viterbi_path
