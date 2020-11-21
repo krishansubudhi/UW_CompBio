@@ -138,7 +138,7 @@ class ViterbiInference:
         if not path:
             path = self.traceback(v_all)
         
-        print(f'Path = {path[:5]}..{path[-5:]}')
+        # print(f'Path = {path[:5]}..{path[-5:]}')
         hits = self.get_hits(path)
         hits = hits[hits.state == hit_state].reset_index(drop=True)
         hits.index += 1

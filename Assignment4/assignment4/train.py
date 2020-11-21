@@ -55,7 +55,7 @@ class ViterbiTrain:
                 transition[prev_state][state] += 1
             prev_state = state
         import time
-        print(f'{time.time()}finished count freq calculation')
+        # print(f'{time.time()}finished count freq calculation')
         return pd.DataFrame(emission).T, pd.DataFrame(transition).T
         # return df.multiply(1/df.sum(axis = 1), axis = 0)
     
