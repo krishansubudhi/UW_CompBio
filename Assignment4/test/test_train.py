@@ -29,7 +29,7 @@ class TestTrain(TestCase):
         assert (self.trainer.emmisionP == self.emmisionP).all().all()
 
     def test_expectation(self):
-        path = self.trainer.expectation()
+        path, v_all = self.trainer.expectation()
         assert path == ['F', 'F', 'L', 'L', 'L', 'F']
 
     def test_calculateFrequencies(self):
@@ -80,3 +80,13 @@ class TestTrain(TestCase):
         
         assert self.trainer.emmisionP.loc['L'][6] == 1
         assert self.trainer.transitionP.loc['L']['F'] == 1/3
+
+    def test_em_step(self):
+        total_iter = 3
+        self.trainer.pseudo_count = 0.01
+        for i in range(total_iter + 1):
+            print(f'\nIteration {i}')
+            path, v_all = self.trainer.expectation()
+            self.trainer.viterbi.print(v_all)
+            if i < total_iter:
+                self.trainer.maximization(path)
