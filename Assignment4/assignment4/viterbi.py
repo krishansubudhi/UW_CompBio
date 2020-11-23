@@ -72,19 +72,6 @@ class ViterbiInference:
                                 ptr = prev_states[argmax])
         return v
 
-    # def traceback(self, v_all):
-    #     sorted_last = sorted(v_all[-1], key = lambda state: v_all[-1][state].pb, reverse = True) 
-    #     path = []
-    #     state = sorted_last[0]
-    #     i = -1
-    #     while state != self.begin_state:
-    #         if self.debug and (-i)%self.debug_freq == 0:
-    #             print(f'calculating traceback : seq position = {i}')
-    #         path.insert(0,state)
-    #         state = v_all[i][state].ptr
-    #         i -= 1
-    #     return path
-
     def traceback(self, v_all):
         sorted_last = sorted(v_all[-1], key = lambda state: v_all[-1][state].pb, reverse = True) 
         path = []

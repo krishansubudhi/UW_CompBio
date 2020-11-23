@@ -11,6 +11,10 @@ class TestTrain(TestCase):
     @classmethod
     def setUpClass(self):
         #called once at the beginning
+        pass
+
+    def setUp(self):
+        print('Set up called') # called before every function
         self.emmisionP = pd.DataFrame([ [1/6]*6, 
                                   [1/10]*5+[1/2] ], 
                                   index = ['F','L'], columns = range(1,7))
@@ -21,11 +25,9 @@ class TestTrain(TestCase):
         self.sequence = [3,1,6,6,6,4]
         self.trainer = ViterbiTrain(self.sequence, self.emmisionP, self.transitionP, 'B')
         print('setUpClass called')
-
-    def setUp(self):
-        print('Set up called') # called before every function
     
     def test_sanity(self):
+        print(self.trainer.emmisionP == self.emmisionP)
         assert (self.trainer.emmisionP == self.emmisionP).all().all()
 
     def test_expectation(self):
@@ -73,13 +75,14 @@ class TestTrain(TestCase):
 
     def test_maximization(self):
         path = ['F', 'F', 'L', 'L', 'L', 'F']
+        self.trainer.pseudo_count = 0.0001
         #self.sequence = [3,1,6,6,6,4]
         self.trainer.maximization(path)
         print(self.trainer.emmisionP)
         print(self.trainer.transitionP)
         
-        assert self.trainer.emmisionP.loc['L'][6] == 1
-        assert self.trainer.transitionP.loc['L']['F'] == 1/3
+        assert 0.9 < self.trainer.emmisionP.loc['L'][6] < 1
+        assert 1/3.1 < self.trainer.transitionP.loc['L']['F'] < 1/2.9
 
     def test_em_step(self):
         total_iter = 3
