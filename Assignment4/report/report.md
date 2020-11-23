@@ -2079,19 +2079,6 @@ Table 1: First 10 hits longer than 50 bp from the 10th pass:
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -2181,19 +2168,6 @@ Table 1: First 10 hits longer than 50 bp from the 10th pass:
 Table 2 : top 30 gold gene positions:
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -2391,27 +2365,12 @@ Table 2 : top 30 gold gene positions:
 
 ## Find match based on overlap
 
-Matches with 50% overlap threshold with gold positions :
+Considering matches with 50% overlap threshold with gold positions as positive:
 
 
 Table 3: Percentage overlap - predicted gene (> 50bp) vs gold genes
 
-
-
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -2421,8 +2380,8 @@ Table 3: Percentage overlap - predicted gene (> 50bp) vs gold genes
       <th>end</th>
       <th>length</th>
       <th>percentage_overlap</th>
-      <th>match</th>
       <th>overlaps</th>
+      <th>match</th>
     </tr>
   </thead>
   <tbody>
@@ -2432,9 +2391,9 @@ Table 3: Percentage overlap - predicted gene (> 50bp) vs gold genes
       <td>97326</td>
       <td>97541</td>
       <td>216</td>
-      <td>52.093023</td>
-      <td>True</td>
+      <td>51.851852</td>
       <td>[[97426, 97537]]</td>
+      <td>True</td>
     </tr>
     <tr>
       <th>1</th>
@@ -2442,9 +2401,9 @@ Table 3: Percentage overlap - predicted gene (> 50bp) vs gold genes
       <td>97627</td>
       <td>97823</td>
       <td>197</td>
-      <td>44.897959</td>
-      <td>False</td>
+      <td>44.670051</td>
       <td>[[97629, 97716]]</td>
+      <td>False</td>
     </tr>
     <tr>
       <th>2</th>
@@ -2453,8 +2412,8 @@ Table 3: Percentage overlap - predicted gene (> 50bp) vs gold genes
       <td>118179</td>
       <td>101</td>
       <td>0.000000</td>
-      <td>False</td>
       <td>[]</td>
+      <td>False</td>
     </tr>
     <tr>
       <th>3</th>
@@ -2462,9 +2421,9 @@ Table 3: Percentage overlap - predicted gene (> 50bp) vs gold genes
       <td>154610</td>
       <td>157697</td>
       <td>3088</td>
-      <td>96.469064</td>
-      <td>True</td>
+      <td>96.437824</td>
       <td>[[154662, 157639]]</td>
+      <td>True</td>
     </tr>
     <tr>
       <th>4</th>
@@ -2472,9 +2431,9 @@ Table 3: Percentage overlap - predicted gene (> 50bp) vs gold genes
       <td>157782</td>
       <td>159591</td>
       <td>1810</td>
-      <td>85.848535</td>
-      <td>True</td>
+      <td>85.801105</td>
       <td>[[157847, 157919], [157984, 159463]]</td>
+      <td>True</td>
     </tr>
     <tr>
       <th>5</th>
@@ -2482,9 +2441,9 @@ Table 3: Percentage overlap - predicted gene (> 50bp) vs gold genes
       <td>358766</td>
       <td>358942</td>
       <td>177</td>
-      <td>86.363636</td>
-      <td>True</td>
+      <td>85.875706</td>
       <td>[[358768, 358845], [358869, 358943]]</td>
+      <td>True</td>
     </tr>
     <tr>
       <th>6</th>
@@ -2492,9 +2451,9 @@ Table 3: Percentage overlap - predicted gene (> 50bp) vs gold genes
       <td>552537</td>
       <td>552862</td>
       <td>326</td>
-      <td>97.230769</td>
-      <td>True</td>
+      <td>96.932515</td>
       <td>[[552541, 552856]]</td>
+      <td>True</td>
     </tr>
     <tr>
       <th>7</th>
@@ -2502,9 +2461,9 @@ Table 3: Percentage overlap - predicted gene (> 50bp) vs gold genes
       <td>637579</td>
       <td>638153</td>
       <td>575</td>
-      <td>81.184669</td>
-      <td>True</td>
+      <td>81.043478</td>
       <td>[[637583, 637659], [637667, 637742], [637772, ...</td>
+      <td>True</td>
     </tr>
     <tr>
       <th>8</th>
@@ -2512,9 +2471,9 @@ Table 3: Percentage overlap - predicted gene (> 50bp) vs gold genes
       <td>638334</td>
       <td>640132</td>
       <td>1799</td>
-      <td>86.540601</td>
-      <td>True</td>
+      <td>86.492496</td>
       <td>[[638448, 639930], [639995, 640067]]</td>
+      <td>True</td>
     </tr>
     <tr>
       <th>9</th>
@@ -2522,13 +2481,14 @@ Table 3: Percentage overlap - predicted gene (> 50bp) vs gold genes
       <td>640217</td>
       <td>643449</td>
       <td>3233</td>
-      <td>95.761139</td>
-      <td>True</td>
+      <td>95.731519</td>
       <td>[[640275, 643254], [643333, 643447]]</td>
+      <td>True</td>
     </tr>
   </tbody>
 </table>
 </div>
+
 
 
 ### Observation

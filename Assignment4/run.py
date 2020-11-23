@@ -76,34 +76,10 @@ print('Table 2 :top 30 gold gene positions:')
 display(genepos.head(30))
 
 
-
-def overlap_count(t1, t2):
-    overlap = set(range(t1[0], t1[1]+1)) & set(range(t2[0], t2[1]+1))
-    return len(overlap)
-
-
-iter_pred = iter(hits_gt50bp[['start', 'end']].head(10).values)
-iter_gold = iter(genepos[['start', 'end']].values)
-overlap_ratios = []
-overlaps =[]
-gold = next(iter_gold)
-for pred in iter_pred:
-    gene_overlaps = []
-    length = pred[1]-pred[0]
-    overlap = 0
-    while pred[1] > gold[0]:
-        c = overlap_count(pred, gold)
-        overlap += c
-        if c> 0:
-            gene_overlaps.append(gold)
-        gold = next(iter_gold)
-    overlap_ratios.append(overlap/length)
-    overlaps.append(gene_overlaps)
-
-# Matches with 50% overlap threshold with gold positions :
-
-df['percentage_overlap'] = np.array(overlap_ratios)*100
-df['overlaps'] =overlaps
+from assignment4.utils import find_overlap
+overlap_lengths, overlap_genes= find_overlap(hits_gt50bp.head(10), genepos)
+df['percentage_overlap'] = np.array(overlap_lengths/ df.length)*100
+df['overlaps'] =overlap_genes
 df['match'] = df['percentage_overlap'] >50
 print("Table 3: Percentage overlap - predicted gene (> 50bp) vs gold genes")
 display(df)
