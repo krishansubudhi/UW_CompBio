@@ -25,8 +25,8 @@ class ORFFinder():
             codon = sequence[start:start+3]
             if codon in self.stop_codons:
                 break
-            end = start+2
-            start +=3
+            end = start+2 #move end to the current codon since it's not a stop codon
+            start +=3 # move start to the next codon
         return end
 
 class ORFAnalyzer():
