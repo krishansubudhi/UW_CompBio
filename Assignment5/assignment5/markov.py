@@ -4,19 +4,26 @@ class MarkovModel():
         self.k = k
         self.pseudo_count = pseudo_count
     
+    def build(self, positive_seqs, background_seqs):
+        self.p_counts, self.p1_counts = self.create_counts(positive_seqs)
+
+
+        self.q_counts, self.q1_counts = self.create_counts(background_seqs)
+
+
     def create_counts(self, sequences):
         def create_counts(seq):
             k = self.k
             if len(seq)<=k:
-                return Counter()
+                return Counter(), Counter()
             kgram_counter = Counter([seq[i:i+k] for i in range(len(seq)-k+1)])
             k1gram_counter = Counter([seq[i:i+k+1] for i in range(len(seq)-k)])
-            return kgram_counter + k1gram_counter
+            return kgram_counter , k1gram_counter
 
-        c = Counter()
+        c, c1 = Counter(), Counter()
         for seq in sequences:
-            c += create_counts(seq)
-        
-
-        return c
+            k, k1= create_counts(seq)
+            c += k
+            c1 += k1
+        return c, c1
     

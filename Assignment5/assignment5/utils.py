@@ -54,3 +54,12 @@ def find_overlap(hits:pd.DataFrame, genepos:pd.DataFrame):
         overlap_lengths.append(overlap)
         overlap_genes.append(gene_overlaps)
     return overlap_lengths, overlap_genes
+
+def get_reverse_complement(sequence):
+    comps = {
+        'A':'T',
+        'C':'G',
+        'T':'A',
+        'G':'C'
+    }
+    return ''.join([comps[nt] for nt in sequence])

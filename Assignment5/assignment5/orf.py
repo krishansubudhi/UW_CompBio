@@ -13,20 +13,31 @@ class ORFFinder():
         orfs = []
         while start<=len(sequence)-3:
             end = self.get_next_orf(sequence, start)
-            if end:
+            if end>start:
                 #start, end, length
-                orfs.append((start+1, end+1, end-start+1)) #starts from 1
-                start = end + 1
-            else:
-                break
-        return pd.DataFrame(orfs, columns = ['start','end','length'])
+                orfs.append((start+1, end+1, end-start+1, readingframe)) #starts from 1
+            start = end + 4
+        return pd.DataFrame(orfs, columns = ['start','end','length','frame'])
 
     def get_next_orf(self, sequence, start):
-        end = None
+        end = start-1
         while  start <= len(sequence) - 3:
             codon = sequence[start:start+3]
             if codon in self.stop_codons:
-                end = start+2 #return the last neucleotite
                 break
+            end = start+2
             start +=3
         return end
+
+class ORFAnalyzer():
+    def __init__(self, orfs:pd.DataFrame):
+        self.orfs = orfs
+        self.long_t = 1400
+        self.short_t = 5
+    
+    def get_long_ofs(self):
+        return self.orfs[self.orfs.length>self.long_t]
+    
+    def get_short_ofs(self):
+        return self.orfs[self.orfs.length<self.short_t]
+    
