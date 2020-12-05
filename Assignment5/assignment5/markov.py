@@ -1,5 +1,7 @@
 from collections import Counter
 import numpy as np
+import pandas as pd
+import math
 class MarkovModel():
     def __init__(self, k=5, pseudo_count = 1 ):
         self.k = k
@@ -9,25 +11,28 @@ class MarkovModel():
         self.p_counts, self.p1_counts = self.create_counts(seqs)
         self.p_total = sum(self.p_counts.values())
     
+    # SIMPLIPY THIS
     def get_count(self,kmer):
         if len(kmer) == self.k+1:
             return self.p1_counts[kmer] +self.pseudo_count
         else:
-            return self.p_counts[kmer] +self.pseudo_count * 4
+            return self.p_counts[kmer[:-1]] +self.pseudo_count * 4
     
     def get_probability(self, kmer):
+        k = self.k
         if len(kmer) == self.k+1:
-            return self.get_count(kmer)/ self.get_count(kmer[:-1]) # conditional probability with pseudo count
+            return ((self.p1_counts[kmer] +self.pseudo_count)/ 
+            (self.p_counts[kmer[:-1]] +self.pseudo_count * 4)) # conditional probability with pseudo count
         else:
             # not using pseudo count here. can be problematic 
             # It's not clear what value to add in denominator.
             # If x is added to the denominator, (4^k)*x should be added to the denominator since there can be  4^k possible kmers
-            return self.p_counts[kmer] / self.p_total  
+            return (self.p_counts[kmer]+ self.pseudo_count) / (self.p_total + math.pow(4,k) * self.pseudo_count)
 
     def get_log_p(self, kmer):
-        print(kmer)
+        # print(kmer)
         p = self.get_probability(kmer)
-        assert p>0
+        assert p>0, f'add pseudo count {kmer}'
         return np.log(p)
     
     def get_loglikelihood(self,seq):
@@ -65,3 +70,20 @@ class GeneModel():
     
     def get_loglikelihood_ratio(self,seq):
         return self.foreground.get_loglikelihood(seq) - self.background.get_loglikelihood(seq)
+
+    def print_sample_counts(self):
+        print('Foreground T|AAGxy counts')
+        print(pd.DataFrame(
+                [[self.foreground.p1_counts['AAG'+x+y+'T'] for y in 'ACGT'] for x in 'ACGT'],
+                columns = list('ACGT'),
+                index = list('ACGT')
+            )
+        )
+
+        print('Background T|AAGxy counts')
+        print(pd.DataFrame(
+                [[self.background.p1_counts['AAG'+x+y+'T'] for y in 'ACGT'] for x in 'ACGT'],
+                columns = list('ACGT'),
+                index = list('ACGT')
+            )
+        )

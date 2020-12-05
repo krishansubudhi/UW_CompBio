@@ -42,4 +42,5 @@ def get_reverse_complement(sequence):
         'T':'A',
         'G':'C'
     }
-    return ''.join([comps[nt] for nt in sequence])
+    complement =  ''.join([comps[nt] for nt in sequence])
+    return complement[::-1]
