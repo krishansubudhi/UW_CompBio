@@ -1,7 +1,8 @@
-from assignment5.utils import get_seqs_from_file, get_reverse_complement
+from assignment5.utils import get_seqs_from_file, get_reverse_complement, get_cds_from_file
 from assignment5.orf import ORFFinder, ORFAnalyzer
-from assignment5.markov import MarkovModel
+from assignment5.markov import GeneModel
 import pandas as pd
+import numpy as np
 
 genome = get_seqs_from_file('data/GCF_000091665.1_ASM9166v1_genomic.fna')[0]
 print('Length of genome is', len(genome))
@@ -24,19 +25,31 @@ positive_seqs = [ genome[record['start']-1:record['end']] for record in long_orf
 print(len(positive_seqs))
 bg_seqs = [get_reverse_complement(seq) for seq in positive_seqs]
 
-markov = MarkovModel(k = 5, pseudo_count=1)
+markov = GeneModel(k = 5, pseudo_count=1)
 markov.build(positive_seqs, bg_seqs)
 
+print('Foreground T|AAGxy counts')
 print(pd.DataFrame(
-        [[markov.p1_counts['AAG'+x+y+'T'] for y in 'ACGT'] for x in 'ACGT'],
+        [[markov.foreground.p1_counts['AAG'+x+y+'T'] for y in 'ACGT'] for x in 'ACGT'],
         columns = list('ACGT'),
         index = list('ACGT')
     )
 )
 
+print('Background T|AAGxy counts')
 print(pd.DataFrame(
-        [[markov.q1_counts['AAG'+x+y+'T'] for y in 'ACGT'] for x in 'ACGT'],
+        [[markov.background.p1_counts['AAG'+x+y+'T'] for y in 'ACGT'] for x in 'ACGT'],
         columns = list('ACGT'),
         index = list('ACGT')
     )
 )
+
+cds = np.array(get_cds_from_file('data/GCF_000091665.1_ASM9166v1_genomic.gff'))
+true_orf_end = set(cds[:,1]-3)
+# print(true_orf_end)
+assert 4563 in true_orf_end
+
+truth = [True if end in true_orf_end else False for end in orfs.end]
+orfs['isCDS'] = truth
+print('Total true ORFS = ', orfs.isCDS.sum())
+print(orfs.head())

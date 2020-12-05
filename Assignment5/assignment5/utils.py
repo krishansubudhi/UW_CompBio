@@ -16,44 +16,24 @@ def get_seqs_from_file(file_path:str):
 
 import re
 
-def get_genes_from_file(file_path:str):
-    # assert filerpath.endswith('.fasta')
+
+def get_cds_from_file(file_path:str):
+    '''
+    head -n 3700 *gff | grep "Protein Homology	CDS	[0-9]*	[0-9]*	.	+" > plusgenes-subset.gff
+    '''
     genepos = []
     with open(file_path,'r') as file:
         lines = file.readlines()
-    for line in lines:
-        if re.search('biotype=.*RNA',line):
+    # print(lines)
+    pattern = "Protein Homology	CDS	[0-9].*	[0-9].*	.	\\+"
+    for i,line in  enumerate(lines):
+        
+        if i<3700 and re.search(pattern, line):
+            # print(line)
             line = line.split()
-            genepos.append((int(line[3]),int(line[4])))
+            # print(line)
+            genepos.append((int(line[4]),int(line[5])))
     return genepos
-
-
-
-def find_overlap(hits:pd.DataFrame, genepos:pd.DataFrame):
-    def overlap_count(t1, t2):
-        overlap = set(range(t1[0], t1[1]+1)) & set(range(t2[0], t2[1]+1))
-        return len(overlap)
-    
-    iter_pred = iter(hits[['start', 'end']].values)
-    iter_gold = iter(genepos[['start', 'end']].values)
-    overlap_lengths = []
-    overlap_genes =[]
-    gold = next(iter_gold)
-    for pred in iter_pred:
-        gene_overlaps = []
-        overlap = 0
-        while pred[1] > gold[0]:
-            c = overlap_count(pred, gold)
-            overlap += c
-            if c> 0:
-                gene_overlaps.append(gold)
-            try:
-                gold = next(iter_gold)
-            except StopIteration:
-                break
-        overlap_lengths.append(overlap)
-        overlap_genes.append(gene_overlaps)
-    return overlap_lengths, overlap_genes
 
 def get_reverse_complement(sequence):
     comps = {
