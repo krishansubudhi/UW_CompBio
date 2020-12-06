@@ -71,17 +71,17 @@ class GeneModel():
     def get_loglikelihood_ratio(self,seq):
         return self.foreground.get_loglikelihood(seq) - self.background.get_loglikelihood(seq)
 
-    def print_sample_counts(self):
-        print('Foreground T|AAGxy counts')
-        print(pd.DataFrame(
+    def print_sample_counts(self, display = print):
+        print('\nForeground T|AAGxy counts for P(T | AAGxy) = ')
+        display(pd.DataFrame(
                 [[self.foreground.p1_counts['AAG'+x+y+'T'] for y in 'ACGT'] for x in 'ACGT'],
                 columns = list('ACGT'),
                 index = list('ACGT')
             )
         )
 
-        print('Background T|AAGxy counts')
-        print(pd.DataFrame(
+        print('\nBackground T|AAGxy counts for Q(T | AAGxy) = ')
+        display(pd.DataFrame(
                 [[self.background.p1_counts['AAG'+x+y+'T'] for y in 'ACGT'] for x in 'ACGT'],
                 columns = list('ACGT'),
                 index = list('ACGT')
