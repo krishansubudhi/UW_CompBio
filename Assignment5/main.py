@@ -48,7 +48,7 @@ import numpy as np
 
 # In[15]:
 
-
+print('Fetching ORFs from fna file... takes few seconds')
 genome = get_seqs_from_file(fna)[0]
 finder = ORFFinder(genome)
 orfs = [finder.get_all_orfs(rf ) for rf in (1,2,3)]
@@ -61,7 +61,7 @@ orfs.head()
 
 # In[16]:
 
-
+print('Fetching CDSs from gff file.. takes few seconds')
 cds = np.array(get_cds_from_file(gff))
 true_orf_end = set(end-3 if  genome[end-3:end] in finder.stop_codons else end for end in cds[:,1])
 len(true_orf_end)
@@ -148,7 +148,7 @@ display(orfs[orfs.length>1400].sort_values('start').head(5))
 # In[13]:
 
 
-print(f'ORFS which are CDS = {orfs.isCDS.sum()}, Total CDSs = {len(true_orf_end)}')
+print(f'\nExtra: ORFS which are CDS = {orfs.isCDS.sum()}, Total CDSs = {len(true_orf_end)}')
 tend = true_orf_end.copy()
 #stop_codons = {'TAA', 'TAG', 'TGA'}
 for x in tend-set(orfs.end):

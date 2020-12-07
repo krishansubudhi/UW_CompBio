@@ -1,4 +1,4 @@
-# Set up
+# 1. Set up
 
 Tested in Python 3.7 windows machine
 
@@ -9,7 +9,16 @@ Tested in Python 3.7 windows machine
         conda activate assignment5
         pip install -r requirements.txt
 
-# Run instructions
+# 2. Run instructions
 
     python main.py
     python plot.py
+
+# 3. Optional: jupyter notebook
+For a better experience, instead of step 2 , run the following
+
+    jupyter notebook
+    
+open `notebooks/main.ipynb` and run all cells
+
+open `notebooks/plot.ipynb` and run all cells
