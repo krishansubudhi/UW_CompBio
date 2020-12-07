@@ -209,7 +209,7 @@ ax.legend(['AB Line', 'true protein ORFs', 'Non Proteins'])
 ax.plot(x_vals, y_vals, '--')
 
 
-
+ax.set_title('scatter-plot of Markov model score (Y-axis) vs ORF length (X-axis)')
 ax.set_xbound(*xlim)
 ax.set_ybound(*ylim)
 plt.show(block= False)
@@ -226,7 +226,7 @@ fig.set_figheight(2.5)
 fig.set_dpi(150)
 i_diffs = score_orf.apply(get_intercept_diff, axis = 1)
 
-ax.plot([short_median_x, long_median_x], [short_median_y, long_median_y],marker ='s')
+ax.plot([short_median_x, long_median_x], [short_median_y, long_median_y],marker ='s', color = 'indigo')
 
 ax.scatter(score_orf[i_diffs>0].length, score_orf[i_diffs>0].scores, s = 1)
 ax.scatter(score_orf[i_diffs<0].length, score_orf[i_diffs<0].scores,s = 1)
@@ -238,8 +238,20 @@ ylim = ax.get_ylim()
 ax.set_title('Flashbulb based predictions (Bisector 20% from A to B)')
 ax.set_xlabel('Length')
 ax.set_ylabel('Markov Score')
-ax.plot(x_vals, y_vals, '--')
+ax.plot(x_vals, y_vals, '--', color = 'teal')
 
+ax.annotate('A',
+   xy=(short_median_x, short_median_y),
+   xytext=(-10, 10 ),    # fraction, fraction
+   textcoords='offset points',
+    fontsize=20,
+   clip_on=True )
+ax.annotate('B',
+   xy=(long_median_x, long_median_y),
+   xytext=(-10, 10 ),     # fraction, fraction
+   textcoords='offset points',
+            fontsize=20,
+   clip_on=True )
 
 ax.plot([50,50],[-1000,1000], '--', color = 'g', lw = 0.7)
 ax.plot([1400,1400],[-1000,1000], '--', color = 'g', lw = 0.7)
@@ -355,17 +367,30 @@ fig.set_figheight(2.5)
 fig.set_dpi(150)
 i_diffs = score_orf.apply(get_intercept_diff, axis = 1)
 
-ax.plot([short_median_x, long_median_x], [short_median_y, long_median_y],marker ='s')
+ax.plot([short_median_x, long_median_x], [short_median_y, long_median_y],marker ='s', color = 'indigo')
+
 
 ax.scatter(score_orf[score_orf.isCDS].length, score_orf[score_orf.isCDS].scores, s = 1)
 ax.scatter(score_orf[~score_orf.isCDS].length, score_orf[~score_orf.isCDS].scores,s = 1)
+ax.annotate('A',
+   xy=(short_median_x, short_median_y),
+   xytext=(-10, 10 ),    # fraction, fraction
+   textcoords='offset points',
+    fontsize=20,
+   clip_on=True )
+ax.annotate('B',
+   xy=(long_median_x, long_median_y),
+   xytext=(-10, 10 ),     # fraction, fraction
+   textcoords='offset points',
+            fontsize=20,
+   clip_on=True )
 ax.set_xlabel('Length')
 ax.set_ylabel('Markov Score')
 ax.set_title('Actual distribution of all ORFS')
-ax.legend(['AB line','True Protein ORFS', 'Non Protiens'],loc = 'lower right')
-ax.plot(x_vals, y_vals, '--')
+ax.plot(x_vals, y_vals, '--', color = 'teal')
 
 
+ax.legend(['AB line','Flashbulb Bisector','True Protein ORFS', 'Non Protiens'],loc = 'lower right')
 ax.set_xbound(*xlim)
 ax.set_ybound(*ylim)
 plt.show()
